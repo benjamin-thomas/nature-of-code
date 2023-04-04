@@ -1,0 +1,2 @@
+# foreman start -f Procfile.dev
+java_fmt: find -name *.pde | entr clang-format -i /_
