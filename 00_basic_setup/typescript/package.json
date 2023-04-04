@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "rm -r ./dist ; parcel index.html"
+    "dev": "rm -r ./dist ; parcel index.html",
+    "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
     "@types/p5": "^1.6.0",
