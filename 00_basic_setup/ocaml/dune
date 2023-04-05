@@ -1,0 +1,12 @@
+(executable
+ (name index)
+ (modes js)
+ (libraries
+  js_of_ocaml
+  ; opam pin add p5 https://github.com/patricoferris/jsoo-p5.git
+  p5))
+
+(rule
+ (alias touch)
+ (action
+  (run touch "index.html")))
