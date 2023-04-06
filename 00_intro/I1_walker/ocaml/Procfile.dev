@@ -1,0 +1,3 @@
+# foreman start -f Procfile.dev
+server: live-server --no-browser .
+build: dune build -w
