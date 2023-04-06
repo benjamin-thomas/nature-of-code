@@ -9,10 +9,10 @@ new p5((p: p5) => {
     ) { }
 
     step(): void {
-      const stepX = Math.floor(Math.random() * 3) - 1; // -1, 0, 1
-      const stepY = Math.floor(Math.random() * 3) - 1; // -1, 0, 1
-      this.x += stepX;
-      this.y += stepY;
+      const randNum = () => p.random([-1, 0, 1]);
+
+      this.x += randNum();
+      this.y += randNum();
     }
 
     display(): void {
