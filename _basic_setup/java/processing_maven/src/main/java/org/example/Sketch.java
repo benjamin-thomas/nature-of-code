@@ -18,7 +18,7 @@ public class Sketch extends PApplet {
     public void draw() {
         stroke(0, 255, 0); // borders green
         fill(255, 0, 0);
-        circle(100, 100, 50);
+        circle(width / 2f, height / 2f, 20);
     }
 
 }
