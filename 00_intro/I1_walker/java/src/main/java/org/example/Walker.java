@@ -11,14 +11,15 @@ class Walker {
         y = sketch.height / 2;
     }
 
-    void step() {
-        x += randBetween(-1, 1);
-        y += randBetween(-1, 1);
+    void step(boolean isExercise) {
+        float toInc = 1f;
+        if (isExercise) toInc = 1.1f;
+        x += randBetween(-1f, toInc);
+        y += randBetween(-1f, toInc);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private int randBetween(int lowInc, int highInc) {
-        return (int) Math.floor(sketch.random(lowInc, highInc + 1));
+    private int randBetween(@SuppressWarnings("SameParameterValue") float fromInc, float toInc) {
+        return (int) Math.floor(sketch.random(fromInc, toInc + 1));
     }
 
     void display() {

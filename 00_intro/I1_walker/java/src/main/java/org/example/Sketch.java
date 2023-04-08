@@ -5,6 +5,11 @@ import processing.core.PApplet;
 public class Sketch extends PApplet {
 
     private Walker walker;
+    private final boolean isExercise;
+
+    public Sketch() {
+        isExercise = "1".equals(System.getProperty("exercise"));
+    }
 
     @Override
     public void settings() {
@@ -20,7 +25,7 @@ public class Sketch extends PApplet {
 
     @Override
     public void draw() {
-        walker.step();
+        walker.step(this.isExercise);
         walker.display();
     }
 }
