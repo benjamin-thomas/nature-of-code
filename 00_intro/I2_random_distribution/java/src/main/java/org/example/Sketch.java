@@ -29,6 +29,10 @@ public class Sketch extends PApplet {
         stroke(0);
         fill(175);
 
+        drawDistribution();
+    }
+
+    private void drawDistribution() {
         int rectWidth = width / randomCounts.length;
         for (int i = 0; i < randomCounts.length; i++) {
             int rectHeight = randomCounts[i];
