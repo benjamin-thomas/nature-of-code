@@ -1,7 +1,19 @@
-node_modules/
+# All
 .vscode/
+
+# TypeScript
+node_modules/
 dist
 .parcel-cache
+
+# OCaml
 _build/
-target/
+
+# Cpp
 cmake-build-debug/
+
+# Java
+target/
+**/.mvn/wrapper/
+mvnw
+mvnw.cmd
