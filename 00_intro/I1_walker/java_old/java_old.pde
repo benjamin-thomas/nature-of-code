@@ -1,3 +1,4 @@
+
 class Walker {
   int x;
   int y;
@@ -31,4 +32,13 @@ void setup() {
 void draw() {
   w.step();
   w.display();
+}
+
+void keyPressed() {
+  System.out.println("key pressed!");
+  // if (value == 0) {
+  //   value = 255;
+  // } else {
+  //   value = 0;
+  // }
 }

@@ -1,6 +1,7 @@
 package org.example;
 
 import processing.core.PApplet;
+import processing.event.KeyEvent;
 
 public class Sketch extends PApplet {
     @Override
@@ -12,7 +13,6 @@ public class Sketch extends PApplet {
     @Override
     public void setup() {
         _setup();
-        System.out.println("setup!");
         super.setup();
     }
 
@@ -23,8 +23,17 @@ public class Sketch extends PApplet {
     }
 
     @Override
+    protected void handleKeyEvent(KeyEvent event) {
+        System.out.println("handleKeyEvent");
+        super.handleKeyEvent(event);
+    }
+
+    @Override
     public void keyPressed() {
-        System.out.println("keyPressed!");
+//        if (ke.getKeyCode() == KeyEvent.VK_ESCAPE)
+//        super.keyPressed();
+//        System.out.println("ke.getKeyCode() = " + ke.getKeyCode());
+        System.out.println("key pressed!");
         super.keyPressed();
     }
 
@@ -34,6 +43,7 @@ public class Sketch extends PApplet {
 
     private void _setup() {
         background(0); // black
+        System.out.println("setup done");
     }
 
     private void _draw() {
