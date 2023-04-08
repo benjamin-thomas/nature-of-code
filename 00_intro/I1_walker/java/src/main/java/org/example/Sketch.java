@@ -3,6 +3,9 @@ package org.example;
 import processing.core.PApplet;
 
 public class Sketch extends PApplet {
+
+    private Walker walker;
+
     @Override
     public void settings() {
         size(640, 360);
@@ -12,12 +15,12 @@ public class Sketch extends PApplet {
     public void setup() {
         windowTitle("Walker");
         background(0); // black
+        walker = new Walker(this);
     }
 
     @Override
     public void draw() {
-        stroke(0, 255, 0); // borders green
-        fill(255, 0, 0);
-        circle(100, 100, 50);
+        walker.step();
+        walker.display();
     }
 }
