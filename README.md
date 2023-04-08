@@ -18,7 +18,11 @@ See:
 
 Run project with:
 
-    processing-java --sketch=$PWD --run`
+    processing-java --sketch=$PWD --run
+
+Inspect the generated code with:
+
+    rm -rf /tmp/sketch ; processing-java --sketch=$PWD --output=/tmp/sketch --export && tail -n+1 /tmp/sketch/source/*.java
 
 Project must have this structure:
 
