@@ -1,33 +1,54 @@
-use nannou::prelude::*;
+use ggez::conf::{WindowMode, WindowSetup};
+use ggez::{
+    event,
+    glam::*,
+    graphics::{self, Color},
+    Context, GameResult,
+};
+use ggez::graphics::{Mesh};
 
-/*
-cargo run
-cargo run --release
- */
-
-fn main() {
-    nannou::app(model).update(update).run();
+struct MainState {
+    pos_x: f32,
+    circle: Mesh,
 }
 
-struct Model {
-    _window: WindowId,
+impl MainState {
+    fn new(ctx: &mut Context) -> GameResult<MainState> {
+        let circle = Mesh::new_circle(
+            ctx,
+            graphics::DrawMode::fill(),
+            vec2(100.0, 0.0), // x always resets at 100 (= pos.x at 0)
+            25.0,
+            0.1,
+            Color::RED,
+        )?;
+
+        Ok(MainState { pos_x: 0.0, circle })
+    }
 }
 
-fn model(app: &App) -> Model {
-    let _window = app.new_window().size(640, 360).view(view).build().unwrap();
-    Model { _window }
+impl event::EventHandler<ggez::GameError> for MainState {
+    fn update(&mut self, _ctx: &mut Context) -> GameResult {
+        self.pos_x = self.pos_x % 320.0 + 0.3;
+        Ok(())
+    }
+
+    fn draw(&mut self, ctx: &mut Context) -> GameResult {
+        let bg_color = Color::BLACK;
+        let mut canvas = graphics::Canvas::from_frame(ctx, bg_color);
+
+        canvas.draw(&self.circle, Vec2::new(self.pos_x, 100.0));
+        canvas.finish(ctx)?;
+        Ok(())
+    }
 }
 
-fn update(_app: &App, _model: &mut Model, _update: Update) {}
+pub fn main() -> GameResult {
+    let cb = ggez::ContextBuilder::new("demo", "me")
+        .window_setup(WindowSetup::default().title("GGEZ project"))
+        .window_mode(WindowMode::default().dimensions(640.0, 360.0));
 
-fn view(app: &App, _model: &Model, frame: Frame) {
-    let draw = app.draw();
-    draw.background().color(BLACK);
-    let diameter = 50.0;
-    draw.ellipse()
-        .color(RED)
-        .w_h(diameter, diameter)
-        .x(-200.0) // to the left. 0 is the center of the window.
-        .y(100.0); // to the top. 0 is the center of the window.
-    draw.to_frame(app, &frame).unwrap();
+    let (mut ctx, event_loop) = cb.build()?;
+    let state = MainState::new(&mut ctx)?;
+    event::run(ctx, event_loop, state)
 }
