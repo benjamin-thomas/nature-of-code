@@ -2,13 +2,22 @@ package org.example;
 
 import processing.core.PApplet;
 
+import java.util.Optional;
+
 public class Sketch extends PApplet {
 
     private Walker walker;
-    private final boolean isExercise;
+    private final int exercise;
 
     public Sketch() {
-        isExercise = "1".equals(System.getProperty("exercise"));
+        exercise = getExercise();
+    }
+
+    private int getExercise() {
+        Optional<String> maybeExercise = Optional.ofNullable(
+                System.getProperty("exercise")
+        );
+        return Integer.parseInt(maybeExercise.orElse("0"));
     }
 
     @Override
@@ -25,7 +34,7 @@ public class Sketch extends PApplet {
 
     @Override
     public void draw() {
-        walker.step(this.isExercise);
+        walker.step(this.exercise);
         walker.display();
     }
 }
