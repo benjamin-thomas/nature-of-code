@@ -9,8 +9,9 @@ public class Main {
             2. Tends to move to the right.
             3. Create a random walker with dynamic probabilities.
                For example, can you give it a 50% chance of moving in the direction of the mouse?
+            5. Implement a variation of our random walk with a normal random distribution.
          */
-        System.setProperty("exercise", "3");
+        System.setProperty("exercise", "5");
         PApplet.main("org.example.Sketch");
     }
 }

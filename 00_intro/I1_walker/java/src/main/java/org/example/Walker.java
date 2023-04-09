@@ -1,7 +1,10 @@
 package org.example;
 
+import java.util.Random;
+
 class Walker {
     private final Sketch sketch;
+    private final Random random;
     private int x;
     private int y;
 
@@ -9,6 +12,7 @@ class Walker {
         this.sketch = sketch;
         x = sketch.width / 2;
         y = sketch.height / 2;
+        random = new Random();
     }
 
     void step(int exercise) {
@@ -45,6 +49,12 @@ class Walker {
                     // Go down
                     y += randBetween(-1f, (1f + prob));
                 }
+            }
+
+            case 5 -> {
+                double stdDev = 2.5; // the higher the number, the bigger the step + the more the pattern "spreads"
+                x += random.nextGaussian(0.4, stdDev); // tends to go left
+                y += random.nextGaussian(0.4, stdDev); // tends to go up
             }
 
             default -> throw new IllegalStateException("Unexpected exercise: " + exercise);
