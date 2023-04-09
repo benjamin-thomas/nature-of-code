@@ -35,6 +35,6 @@ public class Sketch extends PApplet {
     @Override
     public void draw() {
         walker.step(this.exercise);
-        walker.display();
+        walker.display(this.exercise);
     }
 }
