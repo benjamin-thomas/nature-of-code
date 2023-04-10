@@ -3,12 +3,11 @@ Run the sketch:
   processing-java --sketch=$PWD --run
 
 Inspect the generated code:
-  rm -rf /tmp/sketch ; processing-java --sketch=$PWD --output=/tmp/sketch --export && bat /tmp/sketch/source/*.java
+  rm -rf /tmp/sketch ; processing-java --sketch=$PWD --output=/tmp/sketch
+--export && bat /tmp/sketch/source/*.java
 */
 
-void settings() {
-  size(640, 360);
-}
+void settings() { size(640, 360); }
 
 void setup() {
   windowTitle("CHANGE_ME");
