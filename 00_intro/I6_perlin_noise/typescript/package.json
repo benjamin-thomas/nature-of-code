@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "dev": "rm -r ./dist ; parcel index.html",
+    "lint": "eslint . --ext .ts"
+  },
+  "devDependencies": {
+    "@types/p5": "^1.6.0",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "eslint": "^8.37.0",
+    "parcel": "^2.8.3",
+    "typescript": "^5.0.3"
+  },
+  "dependencies": {
+    "p5": "^1.6.0"
+  }
+}
