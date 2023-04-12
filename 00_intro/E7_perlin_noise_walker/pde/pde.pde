@@ -39,7 +39,6 @@ class Walker {
 
   void render() {
     stroke(255);
-    background(0);
-    circle(x, y, 4);
+    line(prevX, prevY, x, y);
   }
 }
