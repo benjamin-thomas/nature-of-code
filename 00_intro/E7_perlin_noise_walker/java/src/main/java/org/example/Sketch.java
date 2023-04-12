@@ -4,8 +4,7 @@ import processing.core.PApplet;
 
 public class Sketch extends PApplet {
 
-    private Walker walker;
-    private Walker walker2;
+    private Walker[] walkers;
 
     @Override
     public void settings() {
@@ -16,17 +15,18 @@ public class Sketch extends PApplet {
     public void setup() {
         windowTitle("Perlin Noise Walker");
         background(0); // black
-        walker = new Walker(0f, 10_000f);
-        walker2 = new Walker(54321f, 77_654f);
+        walkers = new Walker[]{
+                new Walker(0f, 10_000f),
+                new Walker(15_000f, 25_000f),
+        };
     }
 
     @Override
     public void draw() {
-        walker.step();
-        walker.render();
-
-        walker2.step();
-        walker2.render();
+        for (Walker walker : walkers) {
+            walker.step();
+            walker.render();
+        }
     }
 
     class Walker {
@@ -37,7 +37,7 @@ public class Sketch extends PApplet {
         Walker(float tx, float ty) {
             this.tx = tx;
             this.ty = ty;
-            x = map(noise(this.tx), 0, 1, 0, width);
+            x = map(noise(tx), 0, 1, 0, width);
             y = map(noise(ty), 0, 1, 0, height);
         }
 
@@ -62,7 +62,7 @@ public class Sketch extends PApplet {
             rect(0, 0, width, height);
 
             // Really clear. A faint trail remains indefinitely otherwise.
-            if (frameCount % 30 == 0) background(0);
+            if (frameCount % 60 == 0) background(0);
         }
 
     }

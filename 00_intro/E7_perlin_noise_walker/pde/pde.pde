@@ -1,17 +1,22 @@
 
-Walker walker;
+Walker[] walkers;
 
 void settings() { size(640, 360); }
 
 void setup() {
   windowTitle("Perlin Noise Walker");
-  background(0);
-  walker = new Walker();
+  background(0); // black
+  walkers = new Walker[]{
+      new Walker(0f, 10_000f),
+      new Walker(15_000f, 25_000f),
+  };
 }
 
 void draw() {
-  walker.step();
-  walker.render();
+  for (Walker walker : walkers) {
+    walker.step();
+    walker.render();
+  }
 }
 
 class Walker {
@@ -19,9 +24,9 @@ class Walker {
   float x, y;
   float prevX, prevY;
 
-  Walker() {
-    tx = 0;
-    ty = 10_000;
+  Walker(float tx, float ty) {
+    this.tx = tx;
+    this.ty = ty;
     x = map(noise(tx), 0, 1, 0, width);
     y = map(noise(ty), 0, 1, 0, height);
   }
@@ -40,5 +45,14 @@ class Walker {
   void render() {
     stroke(255);
     line(prevX, prevY, x, y);
+
+    // Make trail finite
+    noStroke();
+    fill(0, 30);
+    rect(0, 0, width, height);
+
+    // Really clear. A faint trail remains indefinitely otherwise.
+    if (frameCount % 60 == 0)
+      background(0);
   }
 }
