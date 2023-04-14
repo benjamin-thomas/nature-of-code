@@ -10,18 +10,17 @@ public class Sketch extends PApplet {
     @Override
     public void settings() {
         size(640, 360);
-        fullScreen();
     }
 
     @Override
     public void setup() {
-        windowTitle("Perlin Noise Walker");
+        windowTitle("Perlin Noise Walker (Java/Processing)");
         walkers = new Walker[]{
                 new Walker(0f, 10_000f),
                 new Walker(15_000f, 25_000f),
-                new Walker(30_000f, 40_000f),
-                new Walker(45_000f, 55_000f),
-                new Walker(60_000f, 70_000f),
+//                new Walker(30_000f, 40_000f),
+//                new Walker(45_000f, 55_000f),
+//                new Walker(60_000f, 70_000f),
         };
     }
 
