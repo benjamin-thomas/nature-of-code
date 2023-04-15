@@ -2,10 +2,13 @@
   dune exec bin/main.exe
 *)
 
+module R = Raylib
+module Color = R.Color
+
 let setup () =
   ()
-  ; Raylib.init_window 800 450 "OCaml/Raylib: CHANGE_ME"
-  ; Raylib.set_target_fps 60
+  ; R.init_window 800 450 "OCaml/Raylib: CHANGE_ME"
+  ; R.set_target_fps 60
 ;;
 
 type circle = { x : int; y : int }
@@ -24,23 +27,20 @@ let update () =
     }
 ;;
 
-let rec loop () =
-  if Raylib.window_should_close () then
-    Raylib.close_window ()
-  else
-    let open Raylib in
+let run () =
+  while not @@ R.window_should_close () do
     ()
-    ; begin_drawing ()
-    ; clear_background Color.black
+    ; R.begin_drawing ()
+    ; R.clear_background Color.black
 
     ; update ()
-    ; draw_circle !circle.x !circle.y 50.0 Color.yellow
-    ; end_drawing ()
-    ; loop ()
+    ; R.draw_circle !circle.x !circle.y 50.0 Color.yellow
+    ; R.end_drawing ()
+  done
 ;;
 
 let () =
   ()
   ; setup ()
-  ; loop ()
+  ; run ()
 ;;
