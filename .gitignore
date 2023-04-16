@@ -17,3 +17,6 @@ target/
 **/.mvn/wrapper/
 mvnw
 mvnw.cmd
+
+# Elm
+**/elm-stuff

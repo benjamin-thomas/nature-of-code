@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elm Canvas Sketch</title>
+
+  <script src="https://unpkg.com/elm-canvas@2.2/elm-canvas.js"></script>
+  <script src="dist/sketch.js"></script>
+  <style>
+    body {
+      background-color: white;
+      margin: 0;
+    }
+
+    canvas {
+      background-color: black;
+
+      /* ensures no scroll bars */
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script>
+    Elm.Main.init({
+      node: document.getElementById("app"),
+      flags: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      }
+    });
+  </script>
+</body>
+
+</html>
