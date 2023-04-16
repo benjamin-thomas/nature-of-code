@@ -1,5 +1,5 @@
 (executable
- (name index)
+ (name main)
  (modes js)
  (libraries
   js_of_ocaml
