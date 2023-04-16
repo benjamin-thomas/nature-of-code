@@ -16,7 +16,6 @@ new p5((p: p5) => {
     }
 
     display(): void {
-      p.stroke(0);
       p.point(this.x, this.y);
     }
   }
@@ -26,7 +25,8 @@ new p5((p: p5) => {
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
-    p.background(255);
+    p.background(0);
+    p.stroke(255);
   };
 
   p.draw = () => {
