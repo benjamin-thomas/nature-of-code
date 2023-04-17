@@ -31,6 +31,7 @@ void draw(void) {
 }
 
 int main() {
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(screenWidth, screenHeight, "C/Raylib: CHANGE_ME");
 
     SetTargetFPS(60);
