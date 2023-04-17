@@ -14,7 +14,6 @@
         cmake-build-debug/RaylibProject
  */
 
-#include <stdio.h>
 #include "raylib.h"
 #include "noise1234.h"
 
@@ -35,7 +34,7 @@ static float
 #define TRAIL_SIZE 50
 static Vector2 points[TRAIL_SIZE];
 
-Vector2 update() {
+void update() {
     float x = noise1(tx) * (float) screenWidth / 2;
     x += (float) screenWidth / 2;
 
@@ -44,8 +43,7 @@ Vector2 update() {
 
     tx += SPEED;
     ty += SPEED;
-    Vector2 v = {x, y};
-    points[cursor] = v;
+    points[cursor] = (Vector2) {x, y};
     cursor++;
 
     // Remove old points once buffer has been filled (= trail)
@@ -57,11 +55,9 @@ Vector2 update() {
         // backtrack
         cursor--;
     }
-
-    return v;
 }
 
-void draw(Vector2 v2) {
+void draw() {
     ClearBackground(BLACK);
 
     for (int i = 1; i < TRAIL_SIZE; ++i) {
@@ -77,20 +73,18 @@ void draw(Vector2 v2) {
 }
 
 int main() {
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(screenWidth, screenHeight, "C/Raylib: Perlin Noise Walker");
 
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        Vector2 v = update();
-        draw(v);
+        update();
+        draw();
         EndDrawing();
     }
 
     CloseWindow();
     return 0;
 }
-
-
-
