@@ -7,6 +7,7 @@ module Color = R.Color
 
 let setup () =
   ()
+  ; R.set_config_flags [ R.ConfigFlags.Msaa_4x_hint ]
   ; R.init_window 800 450 "OCaml/Raylib: CHANGE_ME"
   ; R.set_target_fps 60
 ;;
