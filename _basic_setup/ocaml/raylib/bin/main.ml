@@ -8,8 +8,8 @@ module Color = R.Color
 let setup () =
   ()
   ; R.set_config_flags [ R.ConfigFlags.Msaa_4x_hint ]
-  ; R.init_window 800 450 "OCaml/Raylib: CHANGE_ME"
   ; R.set_target_fps 60
+  ; R.init_window 800 450 "OCaml/Raylib: CHANGE_ME"
 ;;
 
 type circle = { x : int; y : int }
@@ -31,10 +31,10 @@ let update () =
 let run () =
   while not @@ R.window_should_close () do
     ()
+    ; update ()
+
     ; R.begin_drawing ()
     ; R.clear_background Color.black
-
-    ; update ()
     ; R.draw_circle !circle.x !circle.y 50.0 Color.yellow
     ; R.end_drawing ()
   done
