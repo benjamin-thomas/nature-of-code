@@ -28,7 +28,7 @@ let half_or_raise n err =
 
 (*
    NOTE: `center_x` and `center_y` are executed on file load.
-         So, the raise check **IS** executed once!
+         So, the raise check **IS** executed once! (i.e. not on every call)
  *)
 let center_x = half_or_raise width "center_x: width must be a pair number"
 let center_y = half_or_raise height "center_y: height must be a pair number"
