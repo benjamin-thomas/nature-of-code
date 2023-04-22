@@ -1,3 +1,15 @@
+/*
+
+Rust is faster the C++ here
+
+    $ time ./cmake-build-release/cpp
+
+    real    0m0.033s
+    user    0m0.033s
+    sys     0m0.000s
+
+ */
+
 #include <iostream>
 #include <fstream>
 
@@ -42,8 +54,8 @@ void generatePattern(unsigned int imageWidth, unsigned int imageHeight, const ch
 }
 
 int main() {
-    const char *filename = "white-noise.ppm";
-    generatePattern(512, 512, filename);
-    std::cout << "Noise generated at: ./cmake-build-debug/" << filename << "\n";
+    const char *filepath = "white-noise.ppm";
+    generatePattern(512, 512, filepath);
+    std::cout << "Noise generated at: " << filepath << "\n";
     return 0;
 }
