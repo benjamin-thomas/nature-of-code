@@ -1,3 +1,13 @@
+/*
+
+    $ time ./cmake-build-release/c
+
+    real    0m0.029s
+    user    0m0.024s
+    sys     0m0.005s
+
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -53,8 +63,8 @@ void generatePattern(unsigned int imageWidth,
 }
 
 int main() {
-    const char *filename = "white-noise.ppm";
+    const char *filename = "/tmp/white-noise.ppm";
     generatePattern(512, 512, filename);
-    printf("Noise generated at: ./cmake-build-debug/%s\n", filename);
+    printf("Noise generated at: %s\n", filename);
     return 0;
 }

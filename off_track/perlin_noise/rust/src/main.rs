@@ -1,3 +1,22 @@
+/*
+    NOTE: I get better performance than C, with minimal effort!
+
+---
+
+    $ time ./target/release/rust
+
+    real    0m0.010s
+    user    0m0.007s
+    sys     0m0.004s
+
+---
+
+    $ time ./cmake-build-release/c
+
+    real    0m0.029s
+    user    0m0.024s
+    sys     0m0.005s
+*/
 use std::fs::File;
 use std::io::{BufWriter, Write};
 use rand;
