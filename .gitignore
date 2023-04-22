@@ -25,3 +25,8 @@ mvnw.cmd
 # Zig
 **/zig-cache/
 **/zig-out/
+
+# Csharp
+**/bin/Debug/
+**/bin/Release/
+**/obj/
