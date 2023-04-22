@@ -1,0 +1,24 @@
+{
+  "name": "noise",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "watch": "concurrently \"tsc --watch\" \"nodemon -q dist/main.js\"",
+    "lint": "eslint . --ext .ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.15.13",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "concurrently": "^8.0.1",
+    "eslint": "^8.39.0",
+    "nodemon": "^2.0.22",
+    "typescript": "^5.0.4"
+  }
+}
