@@ -1,4 +1,17 @@
-﻿using static System.Text.Encoding;
+﻿/*
+ 
+dotnet run && eog /tmp/csharp-white-noise.ppm 
+dotnet build -c Release WhiteNoise.csproj
+
+$ time ./bin/Release/net7.0/WhiteNoise 
+
+real    0m0.131s
+user    0m0.086s
+sys     0m0.024s
+
+ */
+
+using static System.Text.Encoding;
 
 namespace WhiteNoise;
 
