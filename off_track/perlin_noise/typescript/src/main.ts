@@ -1,3 +1,12 @@
+/*
+
+$ time node dist/main.js
+
+real    0m0.335s
+user    0m0.387s
+sys     0m0.067s
+
+*/
 import * as os from "os";
 import * as fs from "fs";
 
