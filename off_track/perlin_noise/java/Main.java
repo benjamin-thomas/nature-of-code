@@ -24,9 +24,9 @@ class Pattern {
     static final String newLine = System.getProperty("line.separator");
 
     static void generate(Dimension dim, Color[] colors,
-                         @SuppressWarnings("SameParameterValue") int scale,
                          @SuppressWarnings("SameParameterValue") String filepath) throws IOException {
 
+        var maxValue = 0xff;
         var file = new File(filepath);
         try (FileOutputStream fos = new FileOutputStream(file)) {
 
@@ -34,16 +34,16 @@ class Pattern {
             fos.write(ppmBytes);
 
             fos.write((dim.width() + " " + dim.height() + newLine).getBytes());
-            fos.write((scale + newLine).getBytes());
+            fos.write((maxValue + newLine).getBytes());
 
             for (int x = 0; x < dim.width(); x++) {
                 for (int y = 0; y < dim.height(); y++) {
                     int randIdx = ThreadLocalRandom.current().nextInt(0, colors.length);
                     var col = colors[randIdx];
                     byte[] rgb = {
-                            (byte) (col.r() * scale),
-                            (byte) (col.g() * scale),
-                            (byte) (col.b() * scale)};
+                            (byte) (col.r() * maxValue),
+                            (byte) (col.g() * maxValue),
+                            (byte) (col.b() * maxValue)};
                     fos.write(rgb);
 
                 }
@@ -62,7 +62,7 @@ class Main {
                 new Color(0.8980f, 0.9372f, 0.9725f),
         };
         String filepath = "/tmp/java-white-noise.ppm";
-        Pattern.generate(dim, colors, 255, filepath);
+        Pattern.generate(dim, colors, filepath);
 
         System.out.println("Pattern generated at: " + filepath);
     }
