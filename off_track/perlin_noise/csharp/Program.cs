@@ -1,6 +1,6 @@
 ﻿/*
  
-dotnet run && eog /tmp/csharp-white-noise.ppm 
+rm /tmp/csharp-white-noise.ppm && dotnet run && eog /tmp/csharp-white-noise.ppm
 dotnet build -c Release WhiteNoise.csproj
 
 $ time ./bin/Release/net7.0/WhiteNoise 
@@ -28,11 +28,12 @@ internal static class Pattern
     {
         const int maxValue = 0xff;
         var rand = new Random();
-        using var fs = new FileStream(filepath, FileMode.Create);
+        using var fileStream = new FileStream(filepath, FileMode.Create);
+        using var bufStream = new BufferedStream(fileStream, 4096);
 
-        fs.Write(ASCII.GetBytes($"{PpmMagicNumber}{NewLine}"));
-        fs.Write(ASCII.GetBytes($"{dim.Width} {dim.Height}{NewLine}"));
-        fs.Write(ASCII.GetBytes($"{maxValue}{NewLine}"));
+        bufStream.Write(ASCII.GetBytes($"{PpmMagicNumber}{NewLine}"));
+        bufStream.Write(ASCII.GetBytes($"{dim.Width} {dim.Height}{NewLine}"));
+        bufStream.Write(ASCII.GetBytes($"{maxValue}{NewLine}"));
 
         for (var x = 0; x < dim.Width; x++)
         {
@@ -46,7 +47,7 @@ internal static class Pattern
                     (byte) (col.G * maxValue),
                     (byte) (col.B * maxValue)
                 };
-                fs.Write(rgb);
+                bufStream.Write(rgb);
             }
         }
     }
