@@ -31,16 +31,14 @@ let noise_1d vertices ~size x =
   (interpolated, is_ref_point)
 ;;
 
-let make_vertices ~size () = Array.init size (fun _ -> Random.float 1.0)
-
-let print_vertices vertices =
-  let string_of_vertices =
-    vertices
+let debug_print_ref_points ref_points =
+  let string_of_ref_points =
+    ref_points
     |> Array.to_list
     |> List.map (Printf.sprintf "%0.3f")
     |> String.concat ", "
   in
-  Printf.printf "--> [%s]\n" string_of_vertices
+  Printf.printf "--> REF_POINTS: [%s]\n%!" string_of_ref_points
 ;;
 
 (* Raylib *)
@@ -51,93 +49,101 @@ module Color = R.Color
 (*
  * WINDOW
  *)
-let width = 640
-let height = 360
+let window_w = 640
+let window_h = 360
 
 let setup () =
   ()
   ; R.set_config_flags [ R.ConfigFlags.Msaa_4x_hint ]
   ; R.set_target_fps 60
-  ; R.init_window width height "OCaml/Raylib: Noise 1D"
+  ; R.init_window window_w window_h "OCaml/Raylib: Noise 1D"
 ;;
-
-(*
-let half_or_raise n err =
-  let half = n / 2 in
-  if half * 2 = n then
-    half
-  else
-    raise @@ Invalid_argument err
-;;
-
-let center_x = half_or_raise width "center_x: width must be a pair number"
-let center_y = half_or_raise height "center_y: height must be a pair number"
-*)
 
 (*
  * DOMAIN
  *)
-(* type circle = { x : int; y : int } *)
+type point = { x : int; y : int; size : float; color : Color.t }
 
 (*
  * UPDATE
  *)
-let update () = ()
+
+let step_over ref_points ~ref_points_size ~all_points_size fn =
+  for i = 0 to all_points_size - 1 do
+    let progression =
+      float_of_int i
+      /. float_of_int all_points_size
+      *. float_of_int ref_points_size
+    in
+    let interpolated = noise_1d ref_points ~size:ref_points_size progression in
+    fn ~i ~interpolated
+  done
+;;
+
+let set_point ~all_points_size ~i ~interpolated:(n, is_hit) =
+  let (x, y) : int * int =
+    let x =
+      float_of_int i /. float_of_int all_points_size *. float_of_int window_w
+    in
+    let y = n *. float_of_int window_h in
+    (int_of_float x, int_of_float y)
+  in
+  let (size, color) =
+    if is_hit then
+      (5.0, Color.green)
+    else
+      (2.0, Color.white)
+  in
+  { x; y; size; color }
+;;
+
+let update all_points ~all_points_size ref_points ~ref_points_size =
+  step_over ref_points ~ref_points_size ~all_points_size
+    (fun ~i ~interpolated ->
+      all_points.(i) <- set_point ~all_points_size ~i ~interpolated)
+;;
 
 (*
  * VIEW
  *)
 
-let step_over vertices ~steps ~size fn =
-  for i = 0 to steps - 1 do
-    let progression =
-      float_of_int i /. float_of_int steps *. float_of_int size
-    in
-    let interpolated = noise_1d vertices ~size progression in
-    fn ~i ~progression ~interpolated
-  done
-;;
+let draw_point point = R.draw_circle point.x point.y point.size point.color
+let bg_color = Color.black
 
-let draw vertices ~steps ~size =
+let draw all_points =
   ()
-  ; R.clear_background Color.black
-  ; step_over vertices ~steps ~size
-      (fun ~i:x ~progression:_ ~interpolated:(y, is_hit) ->
-        let (x, y) : int * int =
-          ( int_of_float
-              (float_of_int x /. float_of_int steps *. float_of_int width)
-          , int_of_float (y *. float_of_int height) )
-        in
-        let (size, color) =
-          if is_hit then
-            (5.0, Color.green)
-          else
-            (2.0, Color.white)
-        in
-        ()
-        ; R.draw_circle x y size color)
+  ; R.clear_background bg_color
+  ; Array.iter draw_point all_points
 ;;
 
 (*
  * BOOTSTRAP
  *)
 
-let seed = 0
+let seed =
+  try Sys.argv.(1) |> int_of_string with
+  | _ ->
+      let () = print_endline "Invalid or unspecified seed: using 0!" in
+      0
+;;
+
+let new_point = { x = 0; y = 0; size = 0.0; color = bg_color }
 
 let () =
   let () = Random.init seed in
-  let size = 10 in
-  let vertices = make_vertices ~size () in
-  let steps = 2000 in
+  let ref_points_size = 10 in
+  let ref_points = Array.init ref_points_size (fun _ -> Random.float 1.0) in
+  let all_points_size = 2000 in
+  let all_points = Array.init all_points_size (fun _ -> new_point) in
 
   ()
-  ; print_vertices vertices
+  ; debug_print_ref_points ref_points
   ; setup ()
   ; while not @@ R.window_should_close () do
       ()
-      ; update () (* FIXME: separate update/draw *)
+      ; update all_points ~all_points_size ref_points ~ref_points_size
       ; R.begin_drawing ()
-      ; draw vertices ~steps ~size
+      ; draw all_points
       ; R.end_drawing ()
     done
 ;;
