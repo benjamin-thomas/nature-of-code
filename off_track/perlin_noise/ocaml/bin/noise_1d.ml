@@ -4,7 +4,7 @@
 
 (* Lerp *)
 
-let lerp1D lo hi t =
+let lerp_1d lo hi t =
   let () = assert (t >= 0.0 && t <= 1.0) in
   (lo *. (1.0 -. t)) +. (hi *. t)
 ;;
@@ -25,7 +25,7 @@ let noise_1d vertices ~size x =
   let lo = int_of_float x mod size in
   let hi = (lo + 1) mod size in
   let t = x -. float_of_int lo in
-  let interpolated = lerp1D vertices.(lo) vertices.(hi) (smooth t) in
+  let interpolated = lerp_1d vertices.(lo) vertices.(hi) (smooth t) in
   let ref_point = vertices.(int_of_float x) in
   let is_ref_point = interpolated = ref_point in
   (interpolated, is_ref_point)
@@ -80,14 +80,12 @@ let step_over ref_points ~ref_points_size ~all_points_size fn =
   done
 ;;
 
-let set_point ~all_points_size ~i ~interpolated:(n, is_hit) =
-  let (x, y) : int * int =
-    let x =
-      float_of_int i /. float_of_int all_points_size *. float_of_int window_w
-    in
-    let y = n *. float_of_int window_h in
-    (int_of_float x, int_of_float y)
+let make_point ~all_points_size ~i ~interpolated:(n, is_hit) =
+  let x =
+    int_of_float
+      (float_of_int i /. float_of_int all_points_size *. float_of_int window_w)
   in
+  let y = int_of_float (n *. float_of_int window_h) in
   let (size, color) =
     if is_hit then
       (5.0, Color.green)
@@ -100,7 +98,7 @@ let set_point ~all_points_size ~i ~interpolated:(n, is_hit) =
 let update all_points ~all_points_size ref_points ~ref_points_size =
   step_over ref_points ~ref_points_size ~all_points_size
     (fun ~i ~interpolated ->
-      all_points.(i) <- set_point ~all_points_size ~i ~interpolated)
+      all_points.(i) <- make_point ~all_points_size ~i ~interpolated)
 ;;
 
 (*
