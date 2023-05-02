@@ -1,35 +1,14 @@
 (*
-    dune exec --display=quiet bin2/noise1D.exe
+    dune exec --display=quiet bin/noise_1d.exe
 *)
 
-(* Lerp *)
+module R = Raylib
+module Color = R.Color
+module Noise1D = Noise.Noise1D
 
-let lerp_1d lo hi t =
-  let () = assert (t >= 0.0 && t <= 1.0) in
-  (lo *. (1.0 -. t)) +. (hi *. t)
-;;
-
-(* To break down what's going on with the `smooth` function, see:
-
-   - https://www.desmos.com/calculator/0upcotocgp
-   - https://www.wolframalpha.com/input?i=plot+cos%28x%29%2C+1+-+cos%28x%29%2C+%281+-+cos%28x%29%29+*+0.5
-*)
-let smooth t =
-  let () = assert (t >= 0.0 && t <= 1.0) in
-  let cos_v  = cos (t *. Float.pi) in (* Range: -1..1 *)
-  let shift = 1.0 -. cos_v in         (* Range:  0..2 *)
-  shift *. 0.5                        (* Range:  0..1 *)
-  [@@ocamlformat "disable"]
-
-let noise_1d vertices ~size x =
-  let lo = int_of_float x mod size in
-  let hi = (lo + 1) mod size in
-  let t = x -. float_of_int lo in
-  let interpolated = lerp_1d vertices.(lo) vertices.(hi) (smooth t) in
-  let ref_point = vertices.(int_of_float x) in
-  let is_ref_point = interpolated = ref_point in
-  (interpolated, is_ref_point)
-;;
+(*
+ * UTILS
+ *)
 
 let debug_print_ref_points ref_points =
   let string_of_ref_points =
@@ -40,11 +19,6 @@ let debug_print_ref_points ref_points =
   in
   Printf.printf "--> REF_POINTS: [%s]\n%!" string_of_ref_points
 ;;
-
-(* Raylib *)
-
-module R = Raylib
-module Color = R.Color
 
 (*
  * WINDOW
@@ -68,23 +42,21 @@ type point = { x : int; y : int; size : float; color : Color.t }
  * UPDATE
  *)
 
+let ratio n total scale =
+  float_of_int n /. float_of_int total *. float_of_int scale
+;;
+
 let step_over ref_points ~ref_points_size ~all_points_size fn =
+  let point_at = Noise1D.point_at ~ref_points ~ref_points_size in
   for i = 0 to all_points_size - 1 do
-    let progression =
-      float_of_int i
-      /. float_of_int all_points_size
-      *. float_of_int ref_points_size
-    in
-    let interpolated = noise_1d ref_points ~size:ref_points_size progression in
+    let progression = ratio i all_points_size ref_points_size in
+    let interpolated = point_at progression in
     fn ~i ~interpolated
   done
 ;;
 
 let make_point ~all_points_size ~i ~interpolated:(n, is_hit) =
-  let x =
-    int_of_float
-      (float_of_int i /. float_of_int all_points_size *. float_of_int window_w)
-  in
+  let x = int_of_float (ratio i all_points_size window_w) in
   let y = int_of_float (n *. float_of_int window_h) in
   let (size, color) =
     if is_hit then

@@ -47,5 +47,6 @@ let get_selection () =
 let () =
   match get_selection () with
   | GenerateWhiteNoise -> Noise.generate_white_noise ()
-  | GraphWithNoise1D -> print_endline "TODO"
+  | GraphWithNoise1D ->
+      print_endline "Run: dune exec --display=quiet bin/noise_1d.exe"
 ;;
