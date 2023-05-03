@@ -10,6 +10,10 @@ module Noise1D = Noise.Noise1D
  * UTILS
  *)
 
+(** printf equivalent with `\n` + flush
+  *)
+let println fmt = Printf.printf (fmt ^^ "\n%!")
+
 let debug_print_ref_points ref_points =
   let string_of_ref_points =
     ref_points
@@ -17,7 +21,7 @@ let debug_print_ref_points ref_points =
     |> List.map (Printf.sprintf "%0.3f")
     |> String.concat ", "
   in
-  Printf.printf "--> REF_POINTS: [%s]\n%!" string_of_ref_points
+  println "--> REF_POINTS: [%s]" string_of_ref_points
 ;;
 
 (*
