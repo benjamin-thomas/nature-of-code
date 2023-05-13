@@ -59,8 +59,15 @@ let step_over ref_points ~ref_points_size ~all_points_size fn =
   done
 ;;
 
-let make_point ~all_points_size ~i ~interpolated:(n, is_hit) =
+let make_point ~all_points_size ~i ~interpolated:(n, is_hit) x_offset =
   let x = int_of_float (ratio i all_points_size window_w) in
+  let x = x - x_offset in
+  let x =
+    if x < 0 then
+      x + window_w
+    else
+      x
+  in
   let y = int_of_float (n *. float_of_int window_h) in
   let (size, color) =
     if is_hit then
@@ -71,10 +78,10 @@ let make_point ~all_points_size ~i ~interpolated:(n, is_hit) =
   { x; y; size; color }
 ;;
 
-let update all_points ~all_points_size ref_points ~ref_points_size =
+let update all_points ~all_points_size ref_points ~ref_points_size x_offset =
   step_over ref_points ~ref_points_size ~all_points_size
     (fun ~i ~interpolated ->
-      all_points.(i) <- make_point ~all_points_size ~i ~interpolated)
+      all_points.(i) <- make_point ~all_points_size ~i ~interpolated x_offset)
 ;;
 
 (*
@@ -109,13 +116,15 @@ let () =
   let ref_points = Array.init ref_points_size (fun _ -> Random.float 1.0) in
   let all_points_size = 2000 in
   let all_points = Array.init all_points_size (fun _ -> new_point) in
+  let x_offset = ref 0 in
 
   ()
   ; debug_print_ref_points ref_points
   ; setup ()
-  ; while not @@ R.window_should_close () do
+  ; while not (R.window_should_close ()) do
       ()
-      ; update all_points ~all_points_size ref_points ~ref_points_size
+      ; update all_points ~all_points_size ref_points ~ref_points_size !x_offset
+      ; x_offset := (!x_offset + 3) mod window_w
       ; R.begin_drawing ()
       ; draw all_points
       ; R.end_drawing ()
