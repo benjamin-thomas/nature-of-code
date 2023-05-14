@@ -1,0 +1,4 @@
+(executable
+ (name main)
+ ; opam install ocamlsdl2 -> sdl2
+ (libraries sdl2))
