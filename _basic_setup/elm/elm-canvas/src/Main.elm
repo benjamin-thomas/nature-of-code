@@ -65,7 +65,7 @@ update msg model =
         Tick dt ->
             let
                 speed =
-                    dt / 8
+                    dt / 2
 
                 ( x, y ) =
                     model.pos
@@ -93,8 +93,7 @@ update msg model =
                         1
 
                     else if newY >= (toFloat canvasHeight - circleSize) then
-                        -- Temporarily do not bounce, for bug report
-                        -1 * 0
+                        -1
 
                     else
                         dirY
