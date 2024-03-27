@@ -17,11 +17,31 @@ type error_ctx =
  *)
 let with_err_ctx ctx = Result.map_error (fun err -> (err, ctx))
 
+let window_coord ~use_second_monitor =
+  if use_second_monitor then
+    (*
+    (2277, 284) corresponds to the coordinates of the middle of my internal monitor.
+    Otherwise, the window always displays on my external monitor, which is not what I want.
+
+    The new window steals the focus though, so I have to continually refocus the editor!
+
+    I tried playing with various gnome settings via `gsettings set org.gnome.desktop.wm.preferences`,
+    but I can't seem to stop the window stealing focus behavior.
+
+    I'll probably have to switch to i3wm for that...
+  *)
+    (2277, 284)
+  else
+    (Window.pos_centered, Window.pos_centered)
+;;
+
 let init_window () =
   let* () = Sdl.init Sdl.Init.(audio + video) in
+
+  let (x, y) = window_coord ~use_second_monitor:true in
+
   let* window =
-    Sdl.create_window "OCaml/TSDL: CHANGE_ME" ~x:Window.pos_centered
-      ~y:Window.pos_centered ~w:640 ~h:480 Window.shown
+    Sdl.create_window "OCaml/TSDL: CHANGE_ME 2" ~x ~y ~w:640 ~h:480 Window.shown
   in
 
   Ok window
