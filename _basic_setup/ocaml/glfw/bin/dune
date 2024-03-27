@@ -1,0 +1,8 @@
+(executable
+ (name main)
+ (libraries glfw-ocaml))
+
+(env
+ (dev
+  (flags
+   (:standard -w -6))))
